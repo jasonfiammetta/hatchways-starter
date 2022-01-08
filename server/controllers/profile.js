@@ -36,7 +36,7 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
     throw new Error("User not found");
   }
 
-  profile = await Profile.findOne({});
+  profile = await Profile.findOne({ user });
   Object.keys(profileData).forEach(key => {
     profile[key] = profileData[key]
   });
