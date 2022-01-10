@@ -8,12 +8,12 @@ const {
   getAllProfiles,
 } = require("../controllers/profile");
 
-router.route("/create-profile").post(protect, createProfile);
+// router.route("/create").post(protect, createProfile);
 
-router.route("/update-profile").patch(protect, updateProfile);
+router.route("/update").patch(protect, updateProfile);
 
-router.route("/profile/:id").get(getProfile);
+router.route("/:id").get(getProfile);
 
-router.route("/profiles").get(getAllProfiles);
+// router.route("/all").get(getAllProfiles);
 
 module.exports = router;

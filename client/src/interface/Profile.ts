@@ -1,11 +1,12 @@
-export interface Profile {
+export interface ProfileServerData {
   firstName: string;
   lastName: string;
-  gender: string;
-  birthDate: Date;
-  phoneNumber: string;
-  address: string;
-  description: string;
+  gender?: string;
+  birthDate?: Date;
+  email?: string;
+  phoneNumber?: string;
+  address?: string;
+  description?: string;
 }
 
 export interface ProfileFormData {
@@ -16,7 +17,7 @@ export interface ProfileFormData {
   birthDay: number;
   birthYear: number;
   email: string;
-  phoneNumber: string | null;
+  phoneNumber?: string;
   address: string;
   description: string;
 }

@@ -39,9 +39,9 @@ const EditProfileForm = ({ userEmail, handleSubmit }: Props): JSX.Element => {
       validationSchema={Yup.object().shape({
         firstName: Yup.string().required('Required'),
         lastName: Yup.string().required('Required'),
-        birthMonth: Yup.number().notRequired().max(12),
-        birthDay: Yup.number().notRequired().max(31),
-        birthYear: Yup.number().notRequired().min(1900),
+        birthMonth: Yup.number().notRequired(),
+        birthDay: Yup.number().notRequired(),
+        birthYear: Yup.number().notRequired(),
         email: Yup.string().required('Email is required').email('Email is not valid'),
         phoneNumber: Yup.string()
           .notRequired()

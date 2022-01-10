@@ -1,4 +1,4 @@
-const Profile = require('../models/Profile');
+const Profile = require("../models/Profile");
 const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 
@@ -6,7 +6,7 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
   const { profileData } = req.body;
 
-  if(!user) {
+  if (!user) {
     res.status(400);
     throw new Error("User not found");
   }
@@ -14,12 +14,12 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
   if (profileData.firstName && profileData.lastName) {
     profile = await Profile.create({
       user,
-      ...profileData
-    })
+      ...profileData,
+    });
     res.status(201).json({
       success: {
-        profile
-      }
+        profile,
+      },
     });
   } else {
     res.status(400);
@@ -37,24 +37,49 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
   }
 
   profile = await Profile.findOne({ user });
-  Object.keys(profileData).forEach(key => {
-    profile[key] = profileData[key]
-  });
-  await profile.save();
 
-  res.status(201).json({
-    success: {
-      profile
+  if (!profile) {
+    if (profileData.firstName && profileData.lastName) {
+      profile = await Profile.create({
+        user,
+        ...profileData,
+      });
+      res.status(201).json({
+        success: {
+          profile,
+        },
+      });
+    } else {
+      res.status(400);
+      throw new Error("Profile must contain first name and last name");
     }
-  });
+  } else {
+    if (profileData.email && profileData.email !== user.email) {
+      user.email = profileData.email;
+      await user.save();
+    }
+
+    delete profileData.email;
+
+    Object.keys(profileData).forEach((key) => {
+      profile[key] = profileData[key];
+    });
+    await profile.save();
+
+    res.status(201).json({
+      success: {
+        profile,
+      },
+    });
+  }
 });
 
 exports.getProfile = asyncHandler(async (req, res, next) => {
   const profile = Profile.findById(req.params.id);
   res.status(201).json({
     success: {
-      profile
-    }
+      profile,
+    },
   });
 });
 
@@ -62,7 +87,7 @@ exports.getAllProfiles = asyncHandler(async (req, res, next) => {
   const profiles = Profile.find();
   res.status(201).json({
     success: {
-      profiles
-    }
+      profiles,
+    },
   });
 });
