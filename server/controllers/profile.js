@@ -75,7 +75,18 @@ exports.updateProfile = asyncHandler(async (req, res, next) => {
 });
 
 exports.getProfile = asyncHandler(async (req, res, next) => {
-  const profile = Profile.findById(req.params.id);
+  const user = await User.findOne({ username: req.params.username });
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const profile = Profile.findOne({ user });
+  if (!profile) {
+    res.status(404);
+    throw new Error("Profile for this user not found");
+  }
   res.status(201).json({
     success: {
       profile,

@@ -12,7 +12,7 @@ const {
 
 router.route("/update").patch(protect, updateProfile);
 
-router.route("/:id").get(getProfile);
+router.route("/:username").get(getProfile);
 
 // router.route("/all").get(getAllProfiles);
 
